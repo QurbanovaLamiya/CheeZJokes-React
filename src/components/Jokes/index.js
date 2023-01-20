@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import JokesList from "../JokesList";
 import JokesStyle from "./Jokes.module.css";
+import Loading from "../../image/giphy.gif";
 
 const Jokes = () => {
   const [joke, setJoke] = useState(null);
@@ -12,7 +13,7 @@ const Jokes = () => {
 
   const getJokes = () => {
     axios
-      .get("https://icanhazdadjoke.com/search?limit=5", {
+      .get("https://icanhazdadjoke.com/search?limit=10", {
         headers: {
           Accept: "application/json",
         },
@@ -22,6 +23,10 @@ const Jokes = () => {
         setJoke(res.data.results);
       });
   };
+
+  if (!joke) {
+    return <img src={Loading} alt="icon" />;
+  }
 
   return (
     <div className={JokesStyle.jokes}>
