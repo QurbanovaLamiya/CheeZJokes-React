@@ -20,8 +20,19 @@ const Jokes = () => {
       })
       .then((res) => {
         // console.log(res.data.results);
-        setJoke(res.data.results);
+        let newData = res.data.results.map((item) => ({ ...item, vote: 0 }));
+        setJoke(newData);
       });
+  };
+
+  const updateJokeVote = (jIndex, jVote) => {
+    let oldJoke = [...joke];
+
+    oldJoke[jIndex].vote = jVote;
+
+    oldJoke.sort((a, z) => z.vote - a.vote);
+
+    setJoke(oldJoke);
   };
 
   if (!joke) {
@@ -38,11 +49,15 @@ const Jokes = () => {
           src="https://assets.dryicons.com/uploads/icon/svg/8927/0eb14c71-38f2-433a-bfc8-23d9c99b3647.svg"
           alt="..."
         />
-        <button>Fetch Jokes</button>
       </div>
       <div className={JokesStyle.jokes_list}>
-        {joke?.map((item) => (
-          <JokesList key={`joke-id-${item.id}`} {...item} />
+        {joke?.map((item, index) => (
+          <JokesList
+            key={`joke-id-${item.id}`}
+            {...item}
+            updateJokeVote={updateJokeVote}
+            jokesIndex={index}
+          />
         ))}
       </div>
     </div>
