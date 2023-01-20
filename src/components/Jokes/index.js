@@ -1,6 +1,28 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import JokesList from "../JokesList";
 import JokesStyle from "./Jokes.module.css";
 
 const Jokes = () => {
+  const [joke, setJoke] = useState(null);
+
+  useEffect(() => {
+    getJokes();
+  }, []);
+
+  const getJokes = () => {
+    axios
+      .get("https://icanhazdadjoke.com/search?limit=5", {
+        headers: {
+          Accept: "application/json",
+        },
+      })
+      .then((res) => {
+        // console.log(res.data.results);
+        setJoke(res.data.results);
+      });
+  };
+
   return (
     <div className={JokesStyle.jokes}>
       <div className={JokesStyle.jokes_left_side}>
@@ -13,7 +35,11 @@ const Jokes = () => {
         />
         <button>Fetch Jokes</button>
       </div>
-      <div className={JokesStyle.jokes_list}></div>
+      <div className={JokesStyle.jokes_list}>
+        {joke?.map((item) => (
+          <JokesList key={`joke-id-${item.id}`} {...item} />
+        ))}
+      </div>
     </div>
   );
 };
