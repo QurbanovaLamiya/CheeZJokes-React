@@ -9,12 +9,12 @@ const JokesList = ({ joke, updateJokeVote, jokesIndex }) => {
   const [vote, setVote] = useState(0);
 
   const inreaseVote = (jIndex) => {
-    updateJokeVote(jIndex, vote);
+    updateJokeVote(jIndex, vote + 1);
     setVote((prev) => prev + 1);
   };
 
   const decreaseVote = (jIndex) => {
-    updateJokeVote(jIndex, vote);
+    updateJokeVote(jIndex, vote - 1);
     setVote((prev) => prev - 1);
   };
 
